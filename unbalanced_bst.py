@@ -70,7 +70,21 @@ class Node(object):
         print str(self.value)
         if self.right:
             self.right.inorder()
-    
+   
+    def get_branches(self, node):
+        """
+        Split up all branch paths in a tree via pre-order traversal
+        """
+        if node.left is None and node.right is None:
+            return [node.value]
+
+        branches = []
+        for branch in self.get_branches(node.left) + self.get_branches(node.right):
+            if not isinstance(branch, list):
+                branch = [branch]
+            branches.append([node.value] + branch) 
+
+        return branches 
 
 class Tree(object):
     """
@@ -79,10 +93,14 @@ class Tree(object):
     def __init__(self):
         self.root = None
     
-    def insert(self, data):
+    def insert(self, *data):
         """
         Inserts data into the tree
         """
+        for element in data:
+            self._insert(element)
+            
+    def _insert(self, data):
         if self.root is not None:
             return self.root.insert(data)
         else:
@@ -130,3 +148,11 @@ class Tree(object):
             self.root.inorder()
         else:
             print 'Empty Tree'
+   
+    def get_branches(self):
+        """
+        Performs a pre-order traversal and returns a list of all
+        branches in the tree starting at the root.
+        """
+        if self.root is not None:
+            return self.root.get_branches(self.root)
