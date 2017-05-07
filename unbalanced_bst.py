@@ -70,21 +70,6 @@ class Node(object):
         print str(self.value)
         if self.right:
             self.right.inorder()
-   
-    def get_branches(self, node):
-        """
-        Split up all branch paths in a tree via pre-order traversal
-        """
-        if node.left is None and node.right is None:
-            return [node.value]
-
-        branches = []
-        for branch in self.get_branches(node.left) + self.get_branches(node.right):
-            if not isinstance(branch, list):
-                branch = [branch]
-            branches.append([node.value] + branch) 
-
-        return branches 
 
 class Tree(object):
     """
@@ -151,8 +136,24 @@ class Tree(object):
    
     def get_branches(self):
         """
-        Performs a pre-order traversal and returns a list of all
-        branches in the tree starting at the root.
+        Return all branches from a tree as a list using stacks.
         """
-        if self.root is not None:
-            return self.root.get_branches(self.root)
+        if self.root is None:
+            return []
+        tree_nodes = [self.root]
+        paths = [[self.root.x]]
+        branches = []
+        while (len(tree_nodes) > 0):
+            node = tree_nodes.pop()
+            path = paths.pop()
+            if node.l is None and node.r is None:
+                branches.append(path)
+            else:
+                if node.r is not None:
+                    tree_nodes.append(node.r)
+                    paths.append(path + [node.r.x])
+                if node.l is not None:
+                    tree_nodes.append(node.l)
+                    paths.append(path + [node.l.x])
+
+        return branches
