@@ -100,6 +100,40 @@ class Tree(object):
             return self.root.find(data)
         return False
     
+    def find_bfs(self, data):
+        """
+        Locates the appropriate tree node in the binary tree using bfs
+        """
+        queue = [self.root]
+        found = False
+        while queue and not found:
+            node = queue.pop(0)
+            if node.value == data:
+                found = True
+            else:
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        return found
+    
+    def find_dfs_iter(self, data):
+        """
+        Locates the appropriate tree node in the binary tree using iterative dfs
+        """
+        stack = [self.root]
+        found = False
+        while stack and not found:
+            node = stack.pop()
+            if node.value == data:
+                found = True
+            else:
+                if node.left:
+                    stack.append(node.left)
+                if node.right:
+                    stack.append(node.right)
+        return found
+    
     def preorder(self):
         """
         Performs a pre-order traversal of the tree.  Use this
@@ -134,26 +168,50 @@ class Tree(object):
         else:
             print 'Empty Tree'
    
-    def get_branches(self):
+    def get_branches_dfs(self):
         """
-        Return all branches from a tree as a list using stacks.
+        Retrieve all branches from a tree using a dfs.
         """
         if self.root is None:
             return []
-        tree_nodes = [self.root]
-        paths = [[self.root.x]]
+        stack = [self.root]
+        paths = [[self.root.value]]
         branches = []
-        while (len(tree_nodes) > 0):
-            node = tree_nodes.pop()
+        while stack:
+            node = stack.pop()
             path = paths.pop()
-            if node.l is None and node.r is None:
+            if node.left is None and node.right is None:
                 branches.append(path)
             else:
-                if node.r is not None:
-                    tree_nodes.append(node.r)
-                    paths.append(path + [node.r.x])
-                if node.l is not None:
-                    tree_nodes.append(node.l)
-                    paths.append(path + [node.l.x])
+                if node.right is not None:
+                    stack.append(node.right)
+                    paths.append(path + [node.right.value])
+                if node.left is not None:
+                    stack.append(node.left)
+                    paths.append(path + [node.left.value])
+
+        return branches
+    
+    def get_branches_bfs(self):
+        """
+        Retrieve all branches from a tree using a bfs.
+        """
+        if self.root is None:
+            return []
+        queue = [self.root]
+        paths = [[self.root.value]]
+        branches = []
+        while queue:
+            node = queue.pop(0)
+            path = paths.pop(0)
+            if node.left is None and node.right is None:
+                branches.append(path)
+            else:
+                if node.right is not None:
+                    queue.append(node.right)
+                    paths.append(path + [node.right.value])
+                if node.left is not None:
+                    queue.append(node.left)
+                    paths.append(path + [node.left.value])
 
         return branches
