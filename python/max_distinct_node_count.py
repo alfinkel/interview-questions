@@ -10,34 +10,16 @@ def solution(T):
     of tree as above.
     """
     max_distinct_values = 0
-    for path in get_paths_better(T):
+    for path in get_paths(T):
         distinct_values = len(set(path))
         if distinct_values > max_distinct_values:
             max_distinct_values = distinct_values
     return max_distinct_values
-    
-def get_paths(node):
-    """
-    Hacked up way to get a list of branches recursively.
-    """
-    if node is None:
-        return []
-    if node.l is None and node.r is None:
-        return [node.x]
 
-    paths = []
-    for path in get_paths(node.l) + get_paths(node.r):
-        if not isinstance(path, list):
-            path = [path]
-        paths.append([node.x] + path)
-
-    return paths
-
-def get_paths_better(root):
+def get_paths(root):
     """
-    Instead of recursing through the tree, use stacks to
-    track the traversal of the tree and to generate the
-    list of branches from the tree (root).
+    Use stacks to track the traversal of the tree and to
+    generate the list of branches from the tree (root).
     """
     # Assign the root to the top of the stack
     tree_nodes = [root]

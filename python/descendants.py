@@ -42,3 +42,15 @@ class Person(object):
             for child in person.children:
                 queue.append(child)
         return family_count
+
+def populate_children(parent, count=10):
+  for i in xrange(1, count+1):
+    parent.children.append(Person("child_{0}".format(i)))
+
+finkel = Person("Al")
+populate_children(finkel, 10)
+for person in finkel.children:
+  populate_children(person, 5)
+print finkel.family_size()
+print finkel.family_size_iter_dfs()
+print finkel.family_size_iter_bfs()
