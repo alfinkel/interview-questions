@@ -1,2 +1,3 @@
-# python-code-snippets
-A repository of handy Python code snippets
+# Interview Questions
+
+Some problems I've been asked to solve during tech screenings.
