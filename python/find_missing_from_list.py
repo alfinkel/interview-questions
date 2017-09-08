@@ -12,21 +12,21 @@ class MissingElementLocator(object):
         self.input_size = len(self.input_list)
         full_size = self.input_list[-1] - self.input_list[0] + 1
         self.output_size = full_size - self.input_size
-        
+
     def find_missing_order_n(self):
         """
         Handles locating the missing entries from the list with O(n) efficiency.
         """
         previous_element = self.input_list[0]
-        for i in xrange(1, self.input_size):
-            difference = self.input_list[i] - previous_element
+        for element in self.input_list:
+            difference = element - previous_element
             if difference > 1:
                 start = previous_element + 1
                 end = previous_element + difference
                 for found in xrange(start, end):
                     print found
-            previous_element = self.input_list[i]
-    
+            previous_element = element
+
     def find_missing_divide_conquer(self):
         """
         Serves as the public interface to the private method that handles
@@ -34,7 +34,7 @@ class MissingElementLocator(object):
         approach.
         """
         self._find_missing_divide_conquer(self.input_list)
-    
+
     def _find_missing_divide_conquer(self, input_list):
         """
         Performs all of the work to locate missing entries from the list by
@@ -45,9 +45,9 @@ class MissingElementLocator(object):
         # selective recursion.
         difference = input_list[-1] - input_list[0]
         size = len(input_list)
-        if size == 2 and difference > 0:
+        if size == 2 and difference > 1:
             start = input_list[0] + 1
-            end = input_list[1]
+            end = input_list[-1]
             for found in xrange(start, end):
                 print found
         elif size <= difference:
